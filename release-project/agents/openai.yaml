@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Project"
+  short_description: "Write changelogs and publish verified releases"
+  default_prompt: "Use $release-project to analyze the changes, choose the next version, write the changelog, and safely prepare or publish the release."
