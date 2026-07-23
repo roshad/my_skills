@@ -1,19 +1,27 @@
 ---
 name: commit-message
-description: Analyze Git changes and propose or create atomic commit messages using a Conventional Commits + Gitmoji hybrid format. Use when the user asks to write, improve, review, split, or execute Git commits, commit messages, staged-change commits, release commits, or changelog-related commits. Always present the exact proposed commit plan first and wait for explicit user confirmation before running git commit; never push automatically.
+description: Analyze Git changes and propose or create atomic Conventional Commit messages that match the repository's established style, including whether it uses Gitmoji. Use when the user asks to write, improve, review, split, or execute Git commits, commit messages, staged-change commits, release commits, or changelog-related commits. Always present the exact proposed commit plan first and wait for explicit user confirmation before running git commit; never push automatically.
 ---
 
 # Commit Message
 
-Generate tool-compatible Conventional Commits with a Gitmoji marker while preserving atomic history and user control.
+Generate tool-compatible Conventional Commits that preserve the repository's existing style, atomic history, and user control.
 
-## Default format
+## Format and emoji style
 
-Use:
+Always keep the Conventional Commit type at the beginning. Use one of these formats according to the repository's established commit style:
 
 ```text
 <type>(<optional-scope>)<optional-!>: <gitmoji> <description>
+<type>(<optional-scope>)<optional-!>: <description>
 ```
+
+Determine emoji usage from recent project history before proposing a message:
+
+- If recent commits consistently or predominantly use emoji, include Gitmoji and match its established placement.
+- If recent commits consistently or predominantly omit emoji, do not add emoji.
+- If history is absent, too sparse, or genuinely mixed with no dominant style, default to including Gitmoji after the colon.
+- Explicit user instructions and repository rules override history and the default.
 
 Examples:
 
@@ -24,13 +32,15 @@ docs: 📝 更新安装与发布说明
 refactor(i18n): ♻️ 统一多语言加载机制
 chore(release): 🔖 发布 v0.4.0
 feat(api)!: ✨ 调整时间记录接口
+feat(timeline): 新增截图点即时刷新
+fix(search): 修复中文关键词无法命中记录
 ```
 
 Keep the Conventional Commit type at the beginning. Do not use `✨ feat: ...`, because common parsers expect the type first.
 
 ## Type and Gitmoji mapping
 
-Choose the narrowest accurate type:
+Choose the narrowest accurate type. Apply the Gitmoji column only when the selected project style uses emoji:
 
 | Type | Gitmoji | Use |
 |---|---|---|
@@ -60,11 +70,11 @@ Use contextual variants when they better explain the change without inventing a 
 2. Run `git status --short`.
 3. Prefer staged changes when the index is non-empty. Inspect them with `git diff --cached --stat` and `git diff --cached`.
 4. If nothing is staged, inspect `git diff --stat` and `git diff`, but do not stage anything yet.
-5. Inspect recent history with `git log -30 --pretty=format:"%s"` to infer language, scope vocabulary, capitalization, and release conventions.
+5. Inspect recent non-merge history with `git log -30 --no-merges --pretty=format:"%s"` to infer language, scope vocabulary, capitalization, release conventions, and especially whether commit subjects use emoji. Prefer the dominant recent pattern over isolated exceptions.
 6. Identify distinct logical concerns. Propose multiple commits when changes are independently reviewable or revertible.
 7. Do not include unrelated existing changes. Never discard, reset, overwrite, or rewrite user work to simplify a commit.
 
-Explicit repository or user instructions override the default mapping. Otherwise retain the hybrid format defined by this skill. Match the repository's dominant language; if unclear, use the user's language.
+Explicit repository or user instructions override inferred history. Otherwise match the repository's dominant style, including emoji presence and placement. When history does not establish an emoji convention, use the Gitmoji format by default. Match the repository's dominant language; if unclear, use the user's language.
 
 ## Write the message
 
@@ -88,7 +98,7 @@ Files:
 - path/to/file
 
 Message:
-`feat(scope): ✨ description`
+`feat(scope): ✨ description` or `feat(scope): description`, according to the inferred project style
 
 Reason:
 One concise sentence explaining the type, scope, and split.

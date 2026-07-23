@@ -1,4 +1,4 @@
 interface:
   display_name: "Commit Message"
-  short_description: "生成 Conventional Commits + Gitmoji 提交信息"
-  default_prompt: "Use $commit-message to analyze my changes and propose commit messages for confirmation."
+  short_description: "Match project history for atomic commit messages"
+  default_prompt: "Use $commit-message to analyze my changes and propose commit messages that match the project history for confirmation."
