@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain Project Plan"
+  short_description: "Opt-in PLAN.md workflow for personal projects"
+  default_prompt: "Use $maintain-project-plan to ask whether this project should use the PLAN.md workflow and maintain its checklist."
